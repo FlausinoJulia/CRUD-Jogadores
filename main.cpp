@@ -12,20 +12,55 @@
 
 using namespace std;
 
-struct jogador
-{
-    unsigned int id;
-    char[51] nomeCompleto;
-    char[31] nomeCamiseta, time;
-    char[21] pais, posicao;
-    unsigned char idade, numero;
-}
-
 int main ()
 {
-    ofstream ofs("jogadores.dat", ios::binary);
+    Jogadores jogadores;
+    char opcao;
+    
 
-    jogador jog = {0, "Richarlison de Andrade", "Richarlison", "Tottenham", "Brasil", "Atacante", 25, 9};
+    while (opcao != 'S')
+    {
+        cout << "Selecione a opção desejada:" << endl;
+        cout << "1 - Cadastrar jogador" << endl; 
+        cout << "S - Sair " << endl; 
+        cin >> opcao;
 
+        switch (opcao)
+        {
+            case '1':
+            {
+                unsigned int id;
+                string nomeCompleto, nomeCamisa, pais, time, posicao;
+                unsigned char idade, numero;
+
+                cout << "\nID: ";
+                cin >> id;
+                cout << "\nNome completo: ";
+                cin >> nomeCompleto;
+                cout << "\nIdade: ";
+                cin >> idade;
+                cout << "\nNome na camiseta: ";
+                cin >> nomeCamisa;
+                cout << "\nNumero na camiseta: ";
+                cin >> numero;
+                cout << "\nPais: ";
+                cin >> pais;
+                cout << "\nTime: ";
+                cin >> time;
+                cout << "\nPosicao: ";
+                cin >> posicao;
+
+                Jogador jog = {id, nomeCompleto, idade, nomeCamisa, numero, pais, time, posicao};
+                jogadores.incluir(jog);
+
+                break;
+            }
+            case 'S':
+            {
+                break;
+            }
+        }                      
+    }
+    
     return 0;
 }

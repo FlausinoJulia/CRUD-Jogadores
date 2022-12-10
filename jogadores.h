@@ -5,18 +5,14 @@
 #include <fstream>
 #include <string>
 #include "jogador.h"
-using namespace std;
 
 class Jogadores
 {
-    private:
-        string nomeArquivo;
     public:
-        Jogadores(string nomeArquivo);
-        bool incluir(Jogador);
-        bool excluir(int id);
-        bool atualizar(Jogador);
-        Jogador buscarJogador(int id);
+        bool incluir(Jogador);               // incluir um jogador no arquivo
+        bool excluir(unsigned int);          // excluir um jogador do arquivo
+        bool atualizar(Jogador);             // atualizar as infos de um jogador
+        Jogador buscarJogador(unsigned int); // buscar um jogador no arquivo
 };
 
 #endif
