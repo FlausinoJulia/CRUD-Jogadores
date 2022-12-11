@@ -5,7 +5,7 @@
 
 #include <iostream>    // biblioteca para mexer com streams de entrada e saída
 #include <fstream>     // biblioteca para mexer com arquivos
-#include <string>      // biblioteca para mexer com strings
+#include <string.h>      // biblioteca para mexer com strings
 
 #include "jogadores.h" // nosso dao
 #include "jogador.h"   // nosso dbo
@@ -16,12 +16,12 @@ int main ()
 {
     Jogadores jogadores;
     char opcao;
-    
 
     while (opcao != 'S')
     {
-        cout << "Selecione a opção desejada:" << endl;
+        cout << "\nSelecione a opcao desejada:" << endl;
         cout << "1 - Cadastrar jogador" << endl; 
+        cout << "2 - Exibir todos os jogadores" << endl;
         cout << "S - Sair " << endl; 
         cin >> opcao;
 
@@ -29,31 +29,53 @@ int main ()
         {
             case '1':
             {
-                unsigned int id;
-                string nomeCompleto, nomeCamisa, pais, time, posicao;
-                unsigned char idade, numero;
+                Jogador jog;
+                string nomeCompleto, nomeCamiseta, pais, time, posicao;
 
                 cout << "\nID: ";
-                cin >> id;
+                cin >> jog.id;
+                cin.ignore();
+
                 cout << "\nNome completo: ";
-                cin >> nomeCompleto;
-                cout << "\nIdade: ";
-                cin >> idade;
+                getline(cin, nomeCompleto);
+                strcpy(jog.nomeCompleto, nomeCompleto.c_str());
+
                 cout << "\nNome na camiseta: ";
-                cin >> nomeCamisa;
-                cout << "\nNumero na camiseta: ";
-                cin >> numero;
+                getline(cin, nomeCamiseta);
+                strcpy(jog.nomeCamiseta, nomeCamiseta.c_str());
+
+                cout << "\nIdade: ";
+                cin >> jog.idade;
+
+                cout << "\nNumero: ";
+                cin >> jog.numero;
+                cin.ignore();
+
                 cout << "\nPais: ";
-                cin >> pais;
+                getline(cin, pais);
+                strcpy(jog.pais, pais.c_str());
+
                 cout << "\nTime: ";
-                cin >> time;
+                getline(cin, time);
+                strcpy(jog.time, time.c_str());
+
                 cout << "\nPosicao: ";
-                cin >> posicao;
-
-                Jogador jog = {id, nomeCompleto, idade, nomeCamisa, numero, pais, time, posicao};
-                jogadores.incluir(jog);
-
+                getline(cin, posicao);
+                strcpy(jog.posicao, posicao.c_str());
+                
+                if (jogadores.incluir(jog))
+                {
+                    cout << "\nJogador incluido com sucesso!"<< endl;
+                }
+                else
+                {
+                    cout << "O jogador nao foi cadastrado." << endl;
+                }
                 break;
+            }
+            case '2':
+            {
+                jogadores.exibirJogadores();
             }
             case 'S':
             {

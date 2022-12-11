@@ -6,13 +6,13 @@
 struct Jogador
 {
     unsigned int id;
-    std::string nomeCompleto;
-    unsigned char idade;
-    std::string nomeCamiseta;
-    unsigned char numero;
-    std::string pais;
-    std::string time;
-    std::string posicao;
+    char nomeCompleto[51];
+    unsigned int idade;
+    char nomeCamiseta[21];
+    unsigned int numero;
+    char pais[31];
+    char time[31];
+    char posicao[21];
     /*
     
     private:
