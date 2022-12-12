@@ -39,7 +39,7 @@ public:
   void setPosicao(std::string);
   std::string getPosicao();
 
-  void criar(int id, char[51], int, char[21], int, char[31], char[31], char[21]);
+  void criar(int, char[51], int, char[21], int, char[31], char[31], char[21]);
 
   void exibir();
 };

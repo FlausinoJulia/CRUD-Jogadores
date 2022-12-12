@@ -109,11 +109,24 @@ int main() {
           while(erro);
         }
 
+        erro = false;
         cin.ignore(); // ignorando \n do buffer
-        cout << "Nome completo...: ";
-        getline(cin, nomeCompleto);
-        // jog.nomecompleto recebe uma copia da string lida no padrão de c++
-        strcpy(jog.nomeCompleto, nomeCompleto.c_str());
+        do 
+        {
+          cout << "Nome completo...: ";
+          getline(cin, nomeCompleto);
+          try
+          {
+            jog.setNomeCompleto(nomeCompleto);
+          }
+          catch(erro)
+          {
+            if(erro == 1)
+          }
+          
+          
+        } while (erro);
+       
 
         cout << "Nome na camiseta: ";
         getline(cin, nomeCamiseta);

@@ -84,6 +84,26 @@ string Jogador::getPosicao() {
   return texto;
 }
 
+void Jogador::criar(int id, string nomeCompleto, int idade, string nomeCamiseta, int numero, 
+          string pais, string time,  string posicao)
+{
+  try 
+  {
+    setId(id);
+    setNomeCompleto(nomeCompleto);
+    setIdade(idade);
+    setNomeCamiseta(nomeCamiseta);
+    setNumero(numero);
+    setPais(pais);
+    setTime(time);
+    setPosicao(posicao);
+  }
+  catch (int erro)
+  {
+    throw erro;
+  }
+}
+
 void Jogador::exibir() {
   cout << "\nID..............: " << id << endl;
   cout << "Nome completo...: " << nomeCompleto << endl;
