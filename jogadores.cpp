@@ -142,7 +142,6 @@ bool Jogadores::existeJogador(int idProcurado)
     {
         if (arquivoEstaVazio(arquivo))
         {
-            cout << "Nenhum jogador foi cadastrado. " << endl;
             return false;
         }
         else
@@ -173,7 +172,7 @@ void Jogadores::exibirJogadores()
     {
         if (arquivoEstaVazio(arquivo))
         {
-            cout << "Nenhum jogador foi cadastrado. " << endl;
+            cout << "\nNenhum jogador cadastrado. " << endl;
         }
         else
         {

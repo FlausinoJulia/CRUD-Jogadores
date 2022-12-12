@@ -43,14 +43,13 @@ int main ()
                 cout << "\nID..............: ";
                 cin >> jog.id;
 
-                do
+                while(jogadores.existeJogador(jog.id))
                 {
-                    cout << "Já existe um jogador com esse ID!" << endl;
+                    cout << "Ja existe um jogador com esse ID!" << endl;
                     cout << "Digite um ID diferente: ";
                     cin >> jog.id;
                 }
-                while(jogadores.existeJogador(jog.id));
-
+                
                 cin.ignore(); // ignorando \n do buffer
                 cout << "Nome completo...: ";
                 getline(cin, nomeCompleto);
@@ -96,6 +95,8 @@ int main ()
             }
             case '2':
             {
+                cout << "\n--------------------" << endl;
+                cout << "EXIBINDO JOGADORES" << endl;
                 jogadores.exibirJogadores();
                 break;
             }
