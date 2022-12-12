@@ -1,102 +1,96 @@
 #include "jogador.h"
-
-// #include <string>
+#include <string.h>
 
 using namespace std;
 
+void Jogador::setId(int id) {
+  if (id < 0)
+    throw 1; // erro - id inválido
 
-/*
-
-void Jogador::criar(unsigned int pid, string pnomeCompleto, string pnomeCamiseta, unsigned char pnumero,
-                   unsigned char pidade, string ppais, string ptime, string pposicao)
-{
-    setId(pid);
-    setNomeCompleto(pnomeCompleto);
-    setNomeCamiseta(pnomeCamiseta);
-    setNumero(pnumero);
-    setIdade(pidade);
-    setPais(ppais);
-    setTime(ptime);
-    setPosicao(pposicao);
+  this->id = id;
 }
 
-void Jogador::setIdade(unsigned char pidade)
-{
-    idade = pidade;
+int Jogador::getId() { return this->id; }
+
+void Jogador::setIdade(int idade) {
+  if (idade < 18 || idade > 60)
+    throw 1; // erro - idade invalida
+
+  this->idade = idade;
 }
 
-unsigned char Jogador::getIdade()
-{
-    return idade;
+int Jogador::getIdade() { return this->idade; }
+
+void Jogador::setNumero(int numero) { this->numero = numero; }
+
+int Jogador::getNumero() { return this->numero; }
+
+void Jogador::setNomeCompleto(string nomeCompleto) {
+  if (nomeCompleto.length() > 51)
+    throw 1;
+
+  strcpy(this->nomeCompleto, nomeCompleto.c_str());
 }
 
-void Jogador::setNumero(unsigned char pnumero)
-{
-    numero = pnumero;
-}
-unsigned char Jogador::getNumero()
-{
-    return numero;
+string Jogador::getNomeCompleto() {
+  string texto = this->nomeCompleto;
+  return texto;
 }
 
-void Jogador::setNomeCompleto(string pnomeCompleto)
-{
-    nomeCompleto = pnomeCompleto;
+void Jogador::setNomeCamiseta(string nomeCamiseta) {
+  if (nomeCamiseta.length() > 21)
+    throw 1;
+
+  strcpy(this->nomeCamiseta, nomeCamiseta.c_str());
 }
 
-string Jogador::getNomeCompleto()
-{
-    return nomeCompleto;
+string Jogador::getNomeCamiseta() {
+  string texto = this->nomeCamiseta;
+  return texto;
 }
 
-void Jogador::setNomeCamiseta(string pnomeCamiseta)
-{
-    nomeCamiseta = pnomeCamiseta;
+void Jogador::setPais(string pais) {
+  if (pais.length() > 31)
+    throw 1;
+
+  strcpy(this->pais, pais.c_str());
 }
-string Jogador::getNomeCamiseta()
-{
-    return nomeCamiseta;
+string Jogador::getPais() {
+  string texto = this->pais;
+  return texto;
 }
 
-void Jogador::setPais(string ppais)
-{
-    pais = ppais;
+void Jogador::setTime(string time) {
+  if (time.length() > 31)
+    throw 1;
+
+  strcpy(this->pais, time.c_str());
 }
 
-string Jogador::getPais()
-{
-    return pais;
+string Jogador::getTime() {
+  string texto = this->time;
+  return texto;
 }
 
-void Jogador::setTime(string ptime)
-{
-    time = ptime;
+void Jogador::setPosicao(string posicao) {
+  if (posicao.length() > 31)
+    throw 1;
+
+  strcpy(this->pais, posicao.c_str());
 }
 
-string Jogador::getTime()
-{
-    return time;
+string Jogador::getPosicao() {
+  string texto = this->posicao;
+  return texto;
 }
 
-void Jogador::setPosicao(string pposicao)
-{
-    posicao = pposicao;
-}
-
-string Jogador::getPosicao()
-{
-    return posicao;
-}
-*/
-
-void Jogador::exibir()
-{
-    cout << "\nID..............: " << id << endl;
-    cout << "Nome completo...: " << nomeCompleto << endl;
-    cout << "Nome na camiseta: " << nomeCamiseta << endl;
-    cout << "Numero..........: " << numero << endl;
-    cout << "Idade...........: " << idade << endl;
-    cout << "Pais............: " << pais << endl;
-    cout << "Time............: " << time << endl;
-    cout << "Posicao.........: " << posicao << endl;
+void Jogador::exibir() {
+  cout << "\nID..............: " << id << endl;
+  cout << "Nome completo...: " << nomeCompleto << endl;
+  cout << "Nome na camiseta: " << nomeCamiseta << endl;
+  cout << "Numero..........: " << numero << endl;
+  cout << "Idade...........: " << idade << endl;
+  cout << "Pais............: " << pais << endl;
+  cout << "Time............: " << time << endl;
+  cout << "Posicao.........: " << posicao << endl;
 }
