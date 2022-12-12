@@ -1,7 +1,14 @@
 #include "jogadores.h"
 #include <iostream>    // biblioteca para mexer com streams de entrada e saída
 #include <fstream>     // biblioteca para mexer com arquivos
+#include <stdio.h>     // para remover e alterar o nome dos arquivos
 using namespace std;
+
+bool Jogadores::arquivoEstaVazio(ifstream& arquivo)
+{
+    arquivo.seekg(0); // ponteiro de leitura no inicio do arq.
+    return arquivo.peek() == ifstream::traits_type::eof();
+}
 
 bool Jogadores::incluir(Jogador jog)
 {
@@ -9,15 +16,6 @@ bool Jogadores::incluir(Jogador jog)
     ofstream arquivo;
     // abrindo o arquivo binario e colocando o ponteiro de escrita no final
     arquivo.open("jogadores.dat", ios::binary | ios::app);
-
-    cout << "\nID..............: " << jog.id << endl;
-    cout << "Nome completo...: " << jog.nomeCompleto << endl;
-    cout << "Nome na camiseta: " << jog.nomeCamiseta << endl;
-    cout << "Numero..........: " << jog.numero << endl;
-    cout << "Idade...........: " << jog.idade << endl;
-    cout << "Pais............: " << jog.pais << endl;
-    cout << "Time............: " << jog.time << endl;
-    cout << "Posicao.........: " << jog.posicao << endl;
 
     if (arquivo.is_open()) // se o arquivo está realmente aberto
     {
@@ -29,28 +27,141 @@ bool Jogadores::incluir(Jogador jog)
     else // se não foi possível incluir o jogador
     {
         // avisamos o usuário e retornamos false
-        cerr << "\nNao foi possível abrir o arquivo! " << endl;
+        cerr << "\nNao foi possível abrir o arquivo! ";
         return false;
     }
 }
 
-bool Jogadores::excluir(unsigned int id)
+bool Jogadores::excluir(int id)
 {
-    unsigned int idui = id;
+    ifstream arquivo;
+    ofstream arquivoNovo;
+
+    arquivo.open("jogadores.dat", ios::binary);
+    arquivoNovo.open("nomeTemp.dat", ios::binary | ios::app);
+
+    if (arquivo.is_open() && arquivoNovo.is_open())
+    {
+        Jogador jog;
+        while (arquivo.read((char*) &jog, sizeof(jog)))
+        {
+            if (jog.id != id)
+            {
+                arquivoNovo.write((char*) &jog, sizeof(jog));
+            }
+        }
+        arquivo.close();
+        arquivoNovo.close();
+
+        remove("jogadores.dat");
+        rename("nomeTemp.dat", "jogadores.dat");
+        return true;
+    }
+    else
+    {
+        cout << "\nNao foi possivel abrir o arquivo! ";
+        return false;
+    }    
+}
+
+bool Jogadores::atualizar(Jogador jogAtualizado, int idProcurado)
+{
+    fstream arquivo;
+    arquivo.open("jogadores.dat", ios::binary | ios::in | ios::out);
+
+    if (arquivo.is_open())
+    {
+        arquivo.seekg(0); // posicionando o ponteiro de leitura no inicio do arq.
+
+        bool achou = false;
+        int pos;
+        Jogador jogProcurado;
+
+        while (!arquivo.eof()) // enquanto nao for o fim do arquivo
+        {
+            // guardamos a posicao atual de leitura
+            pos = arquivo.tellg(); 
+            // lemos o proximo jogador
+            arquivo.read((char*)&jogProcurado, sizeof(jogProcurado));
+            if (jogProcurado.id == idProcurado)
+            {
+                arquivo.seekp(pos); // voltamos para o incio do registro
+                // escrevendo os dados atualizados
+                arquivo.write((char*)&jogAtualizado, sizeof(jogAtualizado));  
+                return true;              
+            }
+        }
+
+        arquivo.close();
+    }
+    else
+    {
+        cerr << "\nNao foi possível abrir o arquivo! ";
+        return false;
+    }
+
     return false;
 }
 
-bool Jogadores::atualizar(Jogador jogador)
+Jogador Jogadores::buscarJogador(int idProcurado)
 {
-    unsigned int uiui = jogador.id;
-    return false;
-}
-
-Jogador Jogadores::buscarJogador(unsigned int id)
-{ 
-    unsigned int idui = id;
     Jogador jog;
+    ifstream arquivo;
+    arquivo.open("jogadores.dat", ios::binary);
+
+    if (arquivo.is_open())
+    {
+        if (arquivoEstaVazio(arquivo))
+        {
+            cout << "Nenhum jogador foi cadastrado. " << endl;
+            return jog;
+        }
+        else
+        {
+            while (arquivo.read((char*)&jog, sizeof(jog)))
+            {
+                if (jog.id == idProcurado)
+                    break; // encontramos o jogador
+            }
+        }
+    }
+    else
+    {
+        cerr << "\nNao foi possivel abrir o arquivo! " ;
+    }    
+    
     return jog;
+}
+
+bool Jogadores::existeJogador(int idProcurado)
+{
+    ifstream arquivo;
+    arquivo.open("jogadores.dat", ios::binary);
+
+    if (arquivo.is_open())
+    {
+        if (arquivoEstaVazio(arquivo))
+        {
+            cout << "Nenhum jogador foi cadastrado. " << endl;
+            return false;
+        }
+        else
+        {
+            Jogador jog;
+            while (arquivo.read((char*)&jog, sizeof(jog)))
+            {
+                if (jog.id == idProcurado)
+                    return true;
+            }
+        }
+        
+    }
+    else
+    {
+        cerr << "\nNao foi possivel abrir o arquivo! " ;
+    }    
+    
+    return false;
 }
 
 void Jogadores::exibirJogadores()
@@ -60,27 +171,21 @@ void Jogadores::exibirJogadores()
 
     if (arquivo.is_open())
     {
-        Jogador jog;
-        int cont = 0;
-        cout << "\nJOGADORES" << endl;
-        while (arquivo.read((char*)&jog, sizeof(jog)))
+        if (arquivoEstaVazio(arquivo))
         {
-            cout << "\nID..............: " << jog.id << endl;
-            cout << "Nome completo...: " << jog.nomeCompleto << endl;
-            cout << "Nome na camiseta: " << jog.nomeCamiseta << endl;
-            cout << "Numero..........: " << jog.numero << endl;
-            cout << "Idade...........: " << jog.idade << endl;
-            cout << "Pais............: " << jog.pais << endl;
-            cout << "Time............: " << jog.time << endl;
-            cout << "Posicao.........: " << jog.posicao << endl;
-            cont++;
+            cout << "Nenhum jogador foi cadastrado. " << endl;
+        }
+        else
+        {
+            Jogador jog;
+            int cont = 0;
+            cout << "\nJOGADORES" << endl;
+            while (arquivo.read((char*)&jog, sizeof(jog)))
+            {
+                jog.exibir();
+            }
         }
 
-        if (cont == 0)
-        {
-            cout << "\nNenhum jogador foi cadastrado." << endl;
-        }
-        
         arquivo.close();
     }
     else

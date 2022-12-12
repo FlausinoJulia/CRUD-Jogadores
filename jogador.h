@@ -5,7 +5,7 @@
 
 struct Jogador
 {
-    unsigned int id;
+    int id;
     char nomeCompleto[51];
     unsigned int idade;
     char nomeCamiseta[21];
@@ -13,6 +13,8 @@ struct Jogador
     char pais[31];
     char time[31];
     char posicao[21];
+
+    void exibir();
     /*
     
     private:

@@ -1,7 +1,11 @@
-/*#include "jogador.h"
+#include "jogador.h"
 
-#include <string>
+// #include <string>
+
 using namespace std;
+
+
+/*
 
 void Jogador::criar(unsigned int pid, string pnomeCompleto, string pnomeCamiseta, unsigned char pnumero,
                    unsigned char pidade, string ppais, string ptime, string pposicao)
@@ -14,17 +18,6 @@ void Jogador::criar(unsigned int pid, string pnomeCompleto, string pnomeCamiseta
     setPais(ppais);
     setTime(ptime);
     setPosicao(pposicao);
-}
-
-
-void Jogador::setId(unsigned int pid)
-{
-    id = pid;
-}
-
-unsigned int Jogador::getId()
-{
-    return id;
 }
 
 void Jogador::setIdade(unsigned char pidade)
@@ -93,4 +86,17 @@ void Jogador::setPosicao(string pposicao)
 string Jogador::getPosicao()
 {
     return posicao;
-}*/
+}
+*/
+
+void Jogador::exibir()
+{
+    cout << "\nID..............: " << id << endl;
+    cout << "Nome completo...: " << nomeCompleto << endl;
+    cout << "Nome na camiseta: " << nomeCamiseta << endl;
+    cout << "Numero..........: " << numero << endl;
+    cout << "Idade...........: " << idade << endl;
+    cout << "Pais............: " << pais << endl;
+    cout << "Time............: " << time << endl;
+    cout << "Posicao.........: " << posicao << endl;
+}
