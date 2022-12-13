@@ -21,12 +21,17 @@ void Jogador::setIdade(int idade) {
 
 int Jogador::getIdade() { return this->idade; }
 
-void Jogador::setNumero(int numero) { this->numero = numero; }
+void Jogador::setNumero(int numero) {
+  if (numero < 1 || numero > 23)
+    throw 1; // erro - numero invalido
+
+  this->numero = numero;
+}
 
 int Jogador::getNumero() { return this->numero; }
 
 void Jogador::setNomeCompleto(string nomeCompleto) {
-  if (nomeCompleto.length() > 51)
+  if (nomeCompleto.length() > 51 || nomeCompleto.empty())
     throw 1;
 
   strcpy(this->nomeCompleto, nomeCompleto.c_str());
@@ -38,7 +43,7 @@ string Jogador::getNomeCompleto() {
 }
 
 void Jogador::setNomeCamiseta(string nomeCamiseta) {
-  if (nomeCamiseta.length() > 21)
+  if (nomeCamiseta.length() > 21 || nomeCamiseta.empty())
     throw 1;
 
   strcpy(this->nomeCamiseta, nomeCamiseta.c_str());
@@ -50,7 +55,7 @@ string Jogador::getNomeCamiseta() {
 }
 
 void Jogador::setPais(string pais) {
-  if (pais.length() > 31)
+  if (pais.length() > 31 || pais.empty())
     throw 1;
 
   strcpy(this->pais, pais.c_str());
@@ -61,10 +66,10 @@ string Jogador::getPais() {
 }
 
 void Jogador::setTime(string time) {
-  if (time.length() > 31)
+  if (time.length() > 31 || time.empty())
     throw 1;
 
-  strcpy(this->pais, time.c_str());
+  strcpy(this->time, time.c_str());
 }
 
 string Jogador::getTime() {
@@ -73,10 +78,10 @@ string Jogador::getTime() {
 }
 
 void Jogador::setPosicao(string posicao) {
-  if (posicao.length() > 31)
+  if (posicao.length() > 31 || posicao.empty())
     throw 1;
 
-  strcpy(this->pais, posicao.c_str());
+  strcpy(this->posicao, posicao.c_str());
 }
 
 string Jogador::getPosicao() {
@@ -84,11 +89,9 @@ string Jogador::getPosicao() {
   return texto;
 }
 
-void Jogador::criar(int id, string nomeCompleto, int idade, string nomeCamiseta, int numero, 
-          string pais, string time,  string posicao)
-{
-  try 
-  {
+void Jogador::criar(int id, string nomeCompleto, int idade, string nomeCamiseta,
+                    int numero, string pais, string time, string posicao) {
+  try {
     setId(id);
     setNomeCompleto(nomeCompleto);
     setIdade(idade);
@@ -97,9 +100,7 @@ void Jogador::criar(int id, string nomeCompleto, int idade, string nomeCamiseta,
     setPais(pais);
     setTime(time);
     setPosicao(posicao);
-  }
-  catch (int erro)
-  {
+  } catch (int erro) {
     throw erro;
   }
 }
