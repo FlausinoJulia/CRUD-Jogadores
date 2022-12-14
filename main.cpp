@@ -12,7 +12,10 @@
 
 using namespace std;
 
+// metodo para verificar se uma string contem apenas valores numericos
 bool isnumber(const string &str) {
+  if (str.empty()) return false;
+  
   return str.find_first_not_of("0123456789") == std::string::npos;
 }
 
@@ -33,26 +36,26 @@ int main() {
     cout << "\nSelecione a opcao desejada: ";
     cin >> opcao;
 
+    // verificamos se o usuario escreveu mais de um caractere
     if (opcao.length() > 1) {
       cout << "\nOpcao invalida!" << endl;
     } else {
       switch (opcao[0]) {
-      case '1': {
-
+      case '1': { // incluir jogador
         Jogador jog;
-        string nomeCompleto, nomeCamiseta, pais, time, posicao;
-        string id, idade, numero;
+        string nomeCompleto, nomeCamiseta, pais, time, posicao,
+               id, idade, numero;
 
         cout << "\n--------------------" << endl;
         cout << "ADICIONANDO JOGADOR" << endl;
 
-        cin.ignore();
+        cin.ignore(); // ignorando o \n no buffer
         cout << "\nID..............: ";
         getline(cin, id);
 
         do {
           if (isnumber(id)) {
-            int idDigitado = stoi(id.c_str());
+            int idDigitado = stoi(id);
             try {
               jog.setId(idDigitado);
               erro = false;
@@ -79,7 +82,7 @@ int main() {
 
           do {
             if (isnumber(id)) {
-              int idDigitado = stol(id);
+              int idDigitado = stoi(id);
               try {
                 jog.setId(idDigitado);
                 erro = false;
@@ -101,7 +104,6 @@ int main() {
           } while (erro);
         }
 
-        // cin.ignore(); // ignorando \n do buffer
         do {
           cout << "Nome completo...: ";
           getline(cin, nomeCompleto);
@@ -111,7 +113,7 @@ int main() {
           } catch (int execao) {
             if (execao == 1) {
               erro = true;
-              cout << "Nome invalido! O nome deve conter no maximo 50 "
+              cout << "\nNome invalido! O nome deve conter de 1 a 50 "
                       "caracteres."
                    << endl;
             }
@@ -127,7 +129,7 @@ int main() {
           } catch (int execao) {
             if (execao == 1) {
               erro = true;
-              cout << "Nome invalido! O nome deve conter no maximo 20 "
+              cout << "\nNome invalido! O nome deve conter de 1 a 20 "
                       "caracteres."
                    << endl;
             }
@@ -139,7 +141,7 @@ int main() {
 
         do {
           if (isnumber(idade)) {
-            int idadeDigitada = stol(idade);
+            int idadeDigitada = stoi(idade);
             try {
               jog.setIdade(idadeDigitada);
               erro = false;
@@ -162,11 +164,10 @@ int main() {
 
         cout << "Numero..........: ";
         getline(cin, numero);
-        // cin.ignore();
 
         do {
           if (isnumber(numero)) {
-            int numeroDigitado = stol(numero);
+            int numeroDigitado = stoi(numero);
             try {
               jog.setNumero(numeroDigitado);
               erro = false;
@@ -195,18 +196,12 @@ int main() {
           } catch (int execao) {
             if (execao == 1) {
               erro = true;
-              cout << "Pais invalido! O pais deve conter no maximo 30 "
+              cout << "\nPais invalido! O pais deve conter de 1 a 30 "
                       "caracteres."
                    << endl;
             }
           }
         } while (erro);
-
-        /*
-        cout << "Time............: ";
-        getline(cin, time);
-        // jog.time recebe uma copia da string lida no padrão de c++
-        strcpy(jog.time, time.c_str());*/
 
         do {
           cout << "Time............: ";
@@ -217,7 +212,7 @@ int main() {
           } catch (int execao) {
             if (execao == 1) {
               erro = true;
-              cout << "Time invalido! O time deve conter no maximo 30 "
+              cout << "\nTime invalido! O time deve conter de 1 a 30 "
                       "caracteres."
                    << endl;
             }
@@ -233,16 +228,19 @@ int main() {
           } catch (int execao) {
             if (execao == 1) {
               erro = true;
-              cout << "Posicao invalida! Deve conter no maximo 20 "
+              cout << "\nPosicao invalida! Deve conter de 1 a 20 "
                       "caracteres."
                    << endl;
             }
           }
         } while (erro);
 
-        if (jogadores.incluir(jog)) {
+        try { 
+          jogadores.incluir(jog) ;
           cout << "\nJogador incluido com sucesso!" << endl;
-        } else {
+        } catch (int excecao) {
+          if (excecao == 1)
+            cout << "\nNao foi possivel abrir o arquivo! ";
           cout << "O jogador nao foi cadastrado." << endl;
         }
         break;
@@ -253,7 +251,7 @@ int main() {
         jogadores.exibirJogadores();
         break;
       }
-      case '3': {
+      case '3': { // buscando jogador
         string idProcurado;
 
         cout << "\n--------------------" << endl;
@@ -270,7 +268,7 @@ int main() {
             if (idDigitado < 0) // id invalido
             {
               erro = true;
-              cout << "ID invalido! O ID deve ser um numero inteiro positivo."
+              cout << "\nID invalido! O ID deve ser um numero inteiro positivo."
                    << endl;
               cout << "Digite um ID diferente: ";
               getline(cin, idProcurado);
@@ -281,7 +279,7 @@ int main() {
           } else // o usuario nao digitou um numero
           {
             erro = true;
-            cout << "ID invalido! O ID deve ser um numero inteiro positivo."
+            cout << "\nID invalido! O ID deve ser um numero inteiro positivo."
                  << endl;
             cout << "Digite um ID diferente: ";
             getline(cin, idProcurado);
@@ -290,18 +288,21 @@ int main() {
 
         int id = stol(idProcurado);
         Jogador jog;
-        jog = jogadores.buscarJogador(id);
-
-        if (jog.getId() == id) {
+        try {
+          jog = jogadores.buscarJogador(id);
           cout << "\nO jogador foi encontrado!" << endl;
           jog.exibir();
-        } else {
-          cout << "Jogador nao existe. " << endl;
+        } catch (int excecao) {
+          if (excecao == 1)
+            cout << "\nNao foi possivel abrir o arquivo!" << endl;
+          else if (excecao == 2)
+            cout << "\nNenhum jogador cadastrado! " << endl;
+          else if (excecao == 3)
+            cout << "\nEsse jogador nao existe!" << endl;
         }
-
         break;
       }
-      case '4': {
+      case '4': { // atualizando jogador
         string idProcurado;
 
         cout << "\n--------------------" << endl;
@@ -318,7 +319,7 @@ int main() {
             if (idDigitado < 0) // id invalido
             {
               erro = true;
-              cout << "ID invalido! O ID deve ser um numero inteiro positivo."
+              cout << "\nID invalido! O ID deve ser um numero inteiro positivo."
                    << endl;
               cout << "Digite um ID diferente: ";
               getline(cin, idProcurado);
@@ -329,7 +330,7 @@ int main() {
           } else // o usuario nao digitou um numero
           {
             erro = true;
-            cout << "ID invalido! O ID deve ser um numero inteiro positivo."
+            cout << "\nID invalido! O ID deve ser um numero inteiro positivo."
                  << endl;
             cout << "Digite um ID diferente: ";
             getline(cin, idProcurado);
@@ -337,251 +338,241 @@ int main() {
         } while (erro);
 
         int id = stoi(idProcurado);
-        Jogador jogDesatualizado = jogadores.buscarJogador(id);
-        if (jogDesatualizado.getId() != id) {
-          cout << "Esse jogador nao existe! ";
-        } else {
-          char desejaAlterar = 'S';
 
-          // MUDAR NOME COMPLETO //
-          while (std::toupper(desejaAlterar) != 'N') {
-            cout << "\nDeseja alterar o nome completo do jogador? [S/N] ";
-            cin >> desejaAlterar;
-            cin.ignore();
+        Jogador jogDesatualizado;
+        try {
+          jogDesatualizado = jogadores.buscarJogador(id);
+        } catch (int excecao) {
+          if (excecao == 1)
+            cout << "\nNao foi possivel abrir o arquivo!" << endl;
+          else if (excecao == 2)
+            cout << "\nNao ha nenhum jogador cadastrado. " << endl;
+          else if (excecao == 3)
+            cout << "\nEsse jogador nao existe!" <<endl;
+          
+          break;
+        }
+        
+        char desejaAlterar = 'S';
 
-            if (std::toupper(desejaAlterar) == 'S') {
-              string nomeCompleto;
-              do {
-                cout << "Novo nome completo: ";
-                getline(cin, nomeCompleto);
+        // MUDAR NOME COMPLETO //
+        while (std::toupper(desejaAlterar) != 'N') {
+          cout << "\nDeseja alterar o nome completo do jogador? [S/N] ";
+          cin >> desejaAlterar;
+          cin.ignore();
+
+          if (std::toupper(desejaAlterar) == 'S') {
+            string nomeCompleto;
+            do {
+              cout << "Novo nome completo: ";
+              getline(cin, nomeCompleto);
+
+              try {
+                jogDesatualizado.setNomeCompleto(nomeCompleto);
+                erro = false;
+              } catch (int execao) {
+                erro = true;
+                cout << "\nNome invalido! Deve conter de 1 a 50 caracteres. "
+                     << endl;
+              }
+            } while (erro);
+
+            break;
+          }
+        }
+
+        // MUDAR NOME CAMISETA /
+        desejaAlterar = 'S';
+        while (std::toupper(desejaAlterar) != 'N') {
+          cout << "\nDeseja alterar o nome da camiseta do jogador? [S/N] ";
+          cin >> desejaAlterar;
+          cin.ignore();
+
+          if (std::toupper(desejaAlterar) == 'S') {
+            string nomeCamiseta;
+            do {
+              cout << "Novo nome na camiseta: ";
+              getline(cin, nomeCamiseta);
+
+              try {
+                jogDesatualizado.setNomeCamiseta(nomeCamiseta);
+                erro = false;
+              } catch (int execao) {
+                erro = true;
+                cout << "\nNome invalido! Deve conter de 1 a 20 caracteres. "
+                     << endl;
+              }
+            } while (erro);
+
+            break;
+          }
+        }
+
+        // MUDAR IDADE //
+        desejaAlterar = 'S';
+        while (std::toupper(desejaAlterar) != 'N') {
+          cout << "\nDeseja alterar a idade do jogador? [S/N] ";
+          cin >> desejaAlterar;
+          cin.ignore();
+
+          if (std::toupper(desejaAlterar) == 'S') {
+            string idade;
+            do {
+              cout << "Nova idade: ";
+              getline(cin, idade);
+
+              if (isnumber(idade)) {
+                int idadeDigitada = stoi(idade);
 
                 try {
-                  jogDesatualizado.setNomeCompleto(nomeCompleto);
+                  jogDesatualizado.setIdade(idadeDigitada);
                   erro = false;
                 } catch (int execao) {
                   erro = true;
-                  cout << "Nome invalido! Deve conter no maximo 50 caracteres. "
-                       << endl;
-                }
-              } while (erro);
-
-              // strcpy(jogDesatualizado.getNomeCompleto(),
-              // nomeCompleto.c_str());
-              break;
-            }
-          }
-
-          // MUDAR NOME CAMISETA /
-
-          desejaAlterar = 'S';
-          while (std::toupper(desejaAlterar) != 'N') {
-            cout << "\nDeseja alterar o nome da camiseta do jogador? [S/N] ";
-            cin >> desejaAlterar;
-            cin.ignore();
-
-            if (std::toupper(desejaAlterar) == 'S') {
-              string nomeCamiseta;
-              do {
-                cout << "Novo nome na camiseta: ";
-                getline(cin, nomeCamiseta);
-
-                try {
-                  jogDesatualizado.setNomeCamiseta(nomeCamiseta);
-                  erro = false;
-                } catch (int execao) {
-                  erro = true;
-                  cout << "Nome invalido! Deve conter no maximo 20 caracteres. "
-                       << endl;
-                }
-              } while (erro);
-
-              // strcpy(jogDesatualizado.getNomeCompleto(),
-              // nomeCompleto.c_str());
-              break;
-            }
-          }
-
-          // MUDAR IDADE //
-          desejaAlterar = 'S';
-          while (std::toupper(desejaAlterar) != 'N') {
-            cout << "\nDeseja alterar a idade do jogador? [S/N] ";
-            cin >> desejaAlterar;
-            cin.ignore();
-
-            if (std::toupper(desejaAlterar) == 'S') {
-              string idade;
-              do {
-                cout << "Nova idade: ";
-                getline(cin, idade);
-
-                if (isnumber(idade)) {
-                  int idadeDigitada = stoi(idade);
-
-                  try {
-                    jogDesatualizado.setIdade(idadeDigitada);
-                    erro = false;
-                  } catch (int execao) {
-                    erro = true;
-                    cout << "Idade invalida! Idade deve ser um numero inteiro "
-                            "entre 18 e 60"
-                         << endl;
-                  }
-                } else {
-                  erro = true;
-                  cout << "Idade invalida! Idade deve ser um numero inteiro "
+                  cout << "\nIdade invalida! Idade deve ser um numero inteiro "
                           "entre 18 e 60"
                        << endl;
                 }
-              } while (erro);
+              } else {
+                erro = true;
+                cout << "\nIdade invalida! Idade deve ser um numero inteiro "
+                        "entre 18 e 60"
+                     << endl;
+              }
+            } while (erro);
 
-              break;
-            }
+            break;
           }
+        }
 
-          // MUDAR NUMERO //
-          /*
-          desejaAlterar = 'S';
-          while (std::toupper(desejaAlterar) != 'N') {
-            cout << "\nDeseja alterar o numero do jogador? [S/N] ";
-            cin >> desejaAlterar;
-            cin.ignore();
+        desejaAlterar = 'S';
+        while (std::toupper(desejaAlterar) != 'N') {
+          cout << "\nDeseja alterar o numero do jogador? [S/N] ";
+          cin >> desejaAlterar;
+          cin.ignore();
 
-            if (std::toupper(desejaAlterar) == 'S') {
-              int numero;
+          if (std::toupper(desejaAlterar) == 'S') {
+            string numero;
+            do {
               cout << "Novo numero: ";
-              cin >> numero;
-              jogDesatualizado.numero = numero;
-              break;
-            }
-          }*/
+              getline(cin, numero);
 
-          desejaAlterar = 'S';
-          while (std::toupper(desejaAlterar) != 'N') {
-            cout << "\nDeseja alterar o numero do jogador? [S/N] ";
-            cin >> desejaAlterar;
-            cin.ignore();
-
-            if (std::toupper(desejaAlterar) == 'S') {
-              string numero;
-              do {
-                cout << "Novo numero: ";
-                getline(cin, numero);
-
-                if (isnumber(numero)) {
-                  int numeroDigitado = stoi(numero);
-
-                  try {
-                    jogDesatualizado.setNumero(numeroDigitado);
-                    erro = false;
-                  } catch (int execao) {
-                    erro = true;
-                    cout << "Numero invalido! Numero deve ser um numero "
-                            "inteiro entre 1 e 23"
-                         << endl;
-                  }
-
-                } else {
-                  erro = true;
-                  cout << "Numero invalido! Numero deve ser um numero inteiro "
-                          "entre 1 e 23"
-                       << endl;
-                }
-
-              } while (erro);
-
-              break;
-            }
-          }
-
-          // MUDAR PAIS //
-          desejaAlterar = 'S';
-          while (std::toupper(desejaAlterar) != 'N') {
-            cout << "\nDeseja alterar o pais do jogador? [S/N] ";
-            cin >> desejaAlterar;
-            cin.ignore();
-
-            if (std::toupper(desejaAlterar) == 'S') {
-              string pais;
-              do {
-                cout << "Novo pais: ";
-                getline(cin, pais);
+              if (isnumber(numero)) {
+                int numeroDigitado = stoi(numero);
 
                 try {
-                  jogDesatualizado.setPais(pais);
+                  jogDesatualizado.setNumero(numeroDigitado);
                   erro = false;
                 } catch (int execao) {
                   erro = true;
-                  cout << "Pais invalido! Deve conter no maximo 30 caracteres. "
+                  cout << "\nNumero invalido! Numero deve ser um numero "
+                          "inteiro entre 1 e 23"
                        << endl;
                 }
-              } while (erro);
-              break;
-            }
+
+              } else {
+                erro = true;
+                cout << "\nNumero invalido! Numero deve ser um numero inteiro "
+                        "entre 1 e 23"
+                     << endl;
+              }
+
+            } while (erro);
+
+            break;
           }
+        }
 
-          // MUDAR TIME //
-          desejaAlterar = 'S';
-          while (std::toupper(desejaAlterar) != 'N') {
-            cout << "\nDeseja alterar o time do jogador? [S/N] ";
-            cin >> desejaAlterar;
-            cin.ignore();
+        // MUDAR PAIS //
+        desejaAlterar = 'S';
+        while (std::toupper(desejaAlterar) != 'N') {
+          cout << "\nDeseja alterar o pais do jogador? [S/N] ";
+          cin >> desejaAlterar;
+          cin.ignore();
 
-            if (std::toupper(desejaAlterar) == 'S') {
-              string time;
-              do {
-                cout << "Novo time: ";
-                getline(cin, time);
+          if (std::toupper(desejaAlterar) == 'S') {
+            string pais;
+            do {
+              cout << "Novo pais: ";
+              getline(cin, pais);
 
-                try {
-                  jogDesatualizado.setTime(time);
-                  erro = false;
-                } catch (int execao) {
-                  erro = true;
-                  cout << "Time invalido! Deve conter no maximo 30 caracteres. "
-                       << endl;
-                }
-              } while (erro);
-              break;
-            }
+              try {
+                jogDesatualizado.setPais(pais);
+                erro = false;
+              } catch (int execao) {
+                erro = true;
+                cout << "\nPais invalido! Deve conter de 1 a 30 caracteres. "
+                     << endl;
+              }
+            } while (erro);
+            break;
           }
+        }
 
-          // MUDAR POSICAO //
-          desejaAlterar = 'S';
-          while (std::toupper(desejaAlterar) != 'N') {
-            cout << "\nDeseja alterar a posicao do jogador? [S/N] ";
-            cin >> desejaAlterar;
-            cin.ignore();
+        // MUDAR TIME //
+        desejaAlterar = 'S';
+        while (std::toupper(desejaAlterar) != 'N') {
+          cout << "\nDeseja alterar o time do jogador? [S/N] ";
+          cin >> desejaAlterar;
+          cin.ignore();
 
-            if (std::toupper(desejaAlterar) == 'S') {
-              string pos;
-              do {
-                cout << "Nova posicao: ";
-                getline(cin, pos);
+          if (std::toupper(desejaAlterar) == 'S') {
+            string time;
+            do {
+              cout << "Novo time: ";
+              getline(cin, time);
 
-                try {
-                  jogDesatualizado.setPosicao(pos);
-                  erro = false;
-                } catch (int execao) {
-                  erro = true;
-                  cout << "Posicao invalida! Deve conter no maximo 20 "
-                          "caracteres. "
-                       << endl;
-                }
-              } while (erro);
-              break;
-            }
+              try {
+                jogDesatualizado.setTime(time);
+                erro = false;
+              } catch (int execao) {
+                erro = true;
+                cout << "\nTime invalido! Deve conter de 1 a 30 caracteres. "
+                     << endl;
+              }
+            } while (erro);
+            break;
           }
+        }
 
-          if (jogadores.atualizar(jogDesatualizado, id)) {
-            cout << "Jogador atualizado com sucesso! " << endl;
-          } else {
-            cout << "Nenhuma alteracao foi feita." << endl;
+        // MUDAR POSICAO //
+        desejaAlterar = 'S';
+        while (std::toupper(desejaAlterar) != 'N') {
+          cout << "\nDeseja alterar a posicao do jogador? [S/N] ";
+          cin >> desejaAlterar;
+          cin.ignore();
+
+          if (std::toupper(desejaAlterar) == 'S') {
+            string pos;
+            do {
+              cout << "Nova posicao: ";
+              getline(cin, pos);
+
+              try {
+                jogDesatualizado.setPosicao(pos);
+                erro = false;
+              } catch (int execao) {
+                erro = true;
+                cout << "\nPosicao invalida! Deve conter de 1 a 20 "
+                        "caracteres. "
+                     << endl;
+              }
+            } while (erro);
+            break;
           }
+        }
+
+        try {
+          jogadores.atualizar(jogDesatualizado, id);
+          cout << "\nJogador atualizado com sucesso!" << endl;
+        } catch (int excecao) {
+          if (excecao == 1)
+            cout << "\nNao foi possivel abrir o arquivo! ";
         }
 
         break;
       }
-      case '5': {
+      case '5': { // deletando jogador
         string idProcurado;
 
         cout << "\n--------------------" << endl;
@@ -598,7 +589,7 @@ int main() {
             if (idDigitado < 0) // id invalido
             {
               erro = true;
-              cout << "ID invalido! O ID deve ser um numero inteiro positivo."
+              cout << "\nID invalido! O ID deve ser um numero inteiro positivo."
                    << endl;
               cout << "Digite um ID diferente: ";
               getline(cin, idProcurado);
@@ -609,25 +600,43 @@ int main() {
           } else // o usuario nao digitou um numero
           {
             erro = true;
-            cout << "ID invalido! O ID deve ser um numero inteiro positivo."
+            cout << "\nID invalido! O ID deve ser um numero inteiro positivo."
                  << endl;
             cout << "Digite um ID diferente: ";
             getline(cin, idProcurado);
           }
         } while (erro);
 
-        int id = stol(idProcurado);
+        int id = stoi(idProcurado);
         Jogador jog;
-        jog = jogadores.buscarJogador(id);
+
+        try {
+            jog = jogadores.buscarJogador(id);
+        }
+        catch (int excecao){
+          if (excecao == 1)
+            cout << "\nNao foi possivel abrir o arquivo!" << endl;
+          else if (excecao == 2)
+            cout << "\nNao ha nenhum jogador cadastrado. " << endl;
+          else if (excecao == 3)
+            cout << "\nEsse jogador nao existe!" << endl;
+          break;
+        }    
 
         if (jog.getId() == id) {
-          if (jogadores.excluir(id)) {
+          try 
+          {
+            jogadores.excluir(id);
             cout << "\nO registro do jogador foi excluido!" << endl;
-          } else {
-            cout << "Nenhum jogador foi excluido. " << endl;
+          } catch (int excecao)
+          {
+            if (excecao == 1)
+              cout << "\nNao foi possivel abrir o arquivo! " << endl;
+            else if (excecao == 2)
+              cout << "\nNao ha nenhum jogador para excluir!" << endl;
           }
         } else {
-          cout << "Esse jogador nao existe! " << endl ;
+          cout << "\nEsse jogador nao existe! " << endl;
         }
       }
       case 'S': {

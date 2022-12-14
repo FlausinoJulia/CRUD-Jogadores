@@ -3,17 +3,19 @@
 
 #include <iostream>
 
-struct Jogador {
+class Jogador {
 private:
-  int id;
-  char nomeCompleto[51];
-  int idade;
-  char nomeCamiseta[21];
-  int numero;
-  char pais[31];
-  char time[31];
-  char posicao[21];
-
+  struct Dados
+  {
+    int id;
+    char nomeCompleto[51];
+    int idade;
+    char nomeCamiseta[21];
+    int numero;
+    char pais[31];
+    char time[31];
+    char posicao[21];
+  } dados;
 public:
   void setId(int);
   int getId();

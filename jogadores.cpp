@@ -9,7 +9,7 @@ bool Jogadores::arquivoEstaVazio(ifstream &arquivo) {
   return arquivo.peek() == ifstream::traits_type::eof();
 }
 
-bool Jogadores::incluir(Jogador jog) {
+void Jogadores::incluir(Jogador jog) {
   // criando um arquivo para a escrita
   ofstream arquivo;
   // abrindo o arquivo binario e colocando o ponteiro de escrita no final
@@ -20,16 +20,13 @@ bool Jogadores::incluir(Jogador jog) {
     // escrevemos o jogador no arquivo
     arquivo.write((char *)&jog, sizeof(jog));
     arquivo.close(); // fechamos o arquivo
-    return true;     // retornamos true
-  } else             // se não foi possível incluir o jogador
+  } else // não foi possível incluir o jogador
   {
-    // avisamos o usuário e retornamos false
-    cerr << "\nNao foi possível abrir o arquivo! ";
-    return false;
+    throw 1; // nao foi possivel abrir o arquivo
   }
 }
 
-bool Jogadores::excluir(int id) {
+void Jogadores::excluir(int id) {
   ifstream arquivo;
   ofstream arquivoNovo;
 
@@ -38,24 +35,29 @@ bool Jogadores::excluir(int id) {
 
   if (arquivo.is_open() && arquivoNovo.is_open()) {
     Jogador jog;
-    while (arquivo.read((char *)&jog, sizeof(jog))) {
-      if (jog.getId() != id) {
-        arquivoNovo.write((char *)&jog, sizeof(jog));
-      }
-    }
-    arquivo.close();
-    arquivoNovo.close();
 
-    remove("jogadores.dat");
-    rename("nomeTemp.dat", "jogadores.dat");
-    return true;
+    if (arquivoEstaVazio(arquivo)) {
+      throw 2; // nao ha nenhum jogador para excluir
+    }
+    else
+    {
+      while (arquivo.read((char *)&jog, sizeof(jog))) {
+        if (jog.getId() != id) {
+        arquivoNovo.write((char *)&jog, sizeof(jog));
+        }
+      }
+      arquivo.close();
+      arquivoNovo.close();
+    
+      remove("jogadores.dat");
+      rename("nomeTemp.dat", "jogadores.dat");
+    }
   } else {
-    cout << "\nNao foi possivel abrir o arquivo! ";
-    return false;
+    throw 1; // nao foi possivel abrir o arquivo
   }
 }
 
-bool Jogadores::atualizar(Jogador jogAtualizado, int idProcurado) {
+void Jogadores::atualizar(Jogador jogAtualizado, int idProcurado) {
   fstream arquivo;
   arquivo.open("jogadores.dat", ios::binary | ios::in | ios::out);
 
@@ -76,17 +78,13 @@ bool Jogadores::atualizar(Jogador jogAtualizado, int idProcurado) {
         arquivo.seekp(pos); // voltamos para o incio do registro
         // escrevendo os dados atualizados
         arquivo.write((char *)&jogAtualizado, sizeof(jogAtualizado));
-        return true;
       }
     }
 
     arquivo.close();
   } else {
-    cerr << "\nNao foi possível abrir o arquivo! ";
-    return false;
+    throw 1; // nao foi possivel abrir o arquivo
   }
-
-  return false;
 }
 
 Jogador Jogadores::buscarJogador(int idProcurado) {
@@ -96,19 +94,17 @@ Jogador Jogadores::buscarJogador(int idProcurado) {
 
   if (arquivo.is_open()) {
     if (arquivoEstaVazio(arquivo)) {
-      cout << "Nenhum jogador foi cadastrado. " << endl;
-      return jog;
+      throw 2; // arquivo vazio
     } else {
       while (arquivo.read((char *)&jog, sizeof(jog))) {
         if (jog.getId() == idProcurado)
-          break; // encontramos o jogador
+          return jog; // encontramos o jogador
       }
+      throw 3; // jogador procurado nao existe
     }
   } else {
-    cerr << "\nNao foi possivel abrir o arquivo! ";
+    throw 1; // nao foi possivel abrir o arquivo
   }
-
-  return jog;
 }
 
 bool Jogadores::existeJogador(int idProcurado) {
@@ -127,7 +123,7 @@ bool Jogadores::existeJogador(int idProcurado) {
     }
 
   } else {
-    cerr << "\nNao foi possivel abrir o arquivo! ";
+    return false; // nenhum jogador foi cadastrado
   }
 
   return false;

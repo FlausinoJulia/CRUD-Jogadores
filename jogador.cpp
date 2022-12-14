@@ -7,38 +7,38 @@ void Jogador::setId(int id) {
   if (id < 0)
     throw 1; // erro - id inválido
 
-  this->id = id;
+  this->dados.id = id;
 }
 
-int Jogador::getId() { return this->id; }
+int Jogador::getId() { return this->dados.id; }
 
 void Jogador::setIdade(int idade) {
   if (idade < 18 || idade > 60)
     throw 1; // erro - idade invalida
 
-  this->idade = idade;
+  this->dados.idade = idade;
 }
 
-int Jogador::getIdade() { return this->idade; }
+int Jogador::getIdade() { return this->dados.idade; }
 
 void Jogador::setNumero(int numero) {
   if (numero < 1 || numero > 23)
     throw 1; // erro - numero invalido
 
-  this->numero = numero;
+  this->dados.numero = numero;
 }
 
-int Jogador::getNumero() { return this->numero; }
+int Jogador::getNumero() { return this->dados.numero; }
 
 void Jogador::setNomeCompleto(string nomeCompleto) {
   if (nomeCompleto.length() > 51 || nomeCompleto.empty())
     throw 1;
 
-  strcpy(this->nomeCompleto, nomeCompleto.c_str());
+  strcpy(this->dados.nomeCompleto, nomeCompleto.c_str());
 }
 
 string Jogador::getNomeCompleto() {
-  string texto = this->nomeCompleto;
+  string texto = this->dados.nomeCompleto;
   return texto;
 }
 
@@ -46,11 +46,11 @@ void Jogador::setNomeCamiseta(string nomeCamiseta) {
   if (nomeCamiseta.length() > 21 || nomeCamiseta.empty())
     throw 1;
 
-  strcpy(this->nomeCamiseta, nomeCamiseta.c_str());
+  strcpy(this->dados.nomeCamiseta, nomeCamiseta.c_str());
 }
 
 string Jogador::getNomeCamiseta() {
-  string texto = this->nomeCamiseta;
+  string texto = this->dados.nomeCamiseta;
   return texto;
 }
 
@@ -58,10 +58,10 @@ void Jogador::setPais(string pais) {
   if (pais.length() > 31 || pais.empty())
     throw 1;
 
-  strcpy(this->pais, pais.c_str());
+  strcpy(this->dados.pais, pais.c_str());
 }
 string Jogador::getPais() {
-  string texto = this->pais;
+  string texto = this->dados.pais;
   return texto;
 }
 
@@ -69,11 +69,11 @@ void Jogador::setTime(string time) {
   if (time.length() > 31 || time.empty())
     throw 1;
 
-  strcpy(this->time, time.c_str());
+  strcpy(this->dados.time, time.c_str());
 }
 
 string Jogador::getTime() {
-  string texto = this->time;
+  string texto = this->dados.time;
   return texto;
 }
 
@@ -81,11 +81,11 @@ void Jogador::setPosicao(string posicao) {
   if (posicao.length() > 31 || posicao.empty())
     throw 1;
 
-  strcpy(this->posicao, posicao.c_str());
+  strcpy(this->dados.posicao, posicao.c_str());
 }
 
 string Jogador::getPosicao() {
-  string texto = this->posicao;
+  string texto = this->dados.posicao;
   return texto;
 }
 
@@ -106,12 +106,12 @@ void Jogador::criar(int id, string nomeCompleto, int idade, string nomeCamiseta,
 }
 
 void Jogador::exibir() {
-  cout << "\nID..............: " << id << endl;
-  cout << "Nome completo...: " << nomeCompleto << endl;
-  cout << "Nome na camiseta: " << nomeCamiseta << endl;
-  cout << "Numero..........: " << numero << endl;
-  cout << "Idade...........: " << idade << endl;
-  cout << "Pais............: " << pais << endl;
-  cout << "Time............: " << time << endl;
-  cout << "Posicao.........: " << posicao << endl;
+  cout << "\nID..............: " << this->dados.id << endl;
+  cout << "Nome completo...: " << this->dados.nomeCompleto << endl;
+  cout << "Nome na camiseta: " << this->dados.nomeCamiseta << endl;
+  cout << "Numero..........: " << this->dados.numero << endl;
+  cout << "Idade...........: " << this->dados.idade << endl;
+  cout << "Pais............: " << this->dados.pais << endl;
+  cout << "Time............: " << this->dados.time << endl;
+  cout << "Posicao.........: " << this->dados.posicao << endl;
 }
