@@ -60,6 +60,7 @@ void Jogador::setPais(string pais) {
 
   strcpy(this->dados.pais, pais.c_str());
 }
+
 string Jogador::getPais() {
   string texto = this->dados.pais;
   return texto;
@@ -105,6 +106,8 @@ void Jogador::criar(int id, string nomeCompleto, int idade, string nomeCamiseta,
   }
 }
 
+/*
+// podia ser substituido por operator <<
 void Jogador::exibir() {
   cout << "\nID..............: " << this->dados.id << endl;
   cout << "Nome completo...: " << this->dados.nomeCompleto << endl;
@@ -114,4 +117,18 @@ void Jogador::exibir() {
   cout << "Pais............: " << this->dados.pais << endl;
   cout << "Time............: " << this->dados.time << endl;
   cout << "Posicao.........: " << this->dados.posicao << endl;
+}
+*/
+
+ostream& operator << (ostream& os, const Jogador& jog)
+{ 
+  os << "\nID..............: " << jog.dados.id << endl;
+  os << "Nome completo...: " << jog.dados.nomeCompleto << endl;
+  os << "Nome na camiseta: " << jog.dados.nomeCamiseta << endl;
+  os << "Numero..........: " << jog.dados.numero << endl;
+  os << "Idade...........: " << jog.dados.idade << endl;
+  os << "Pais............: " << jog.dados.pais << endl;
+  os << "Time............: " << jog.dados.time << endl;
+  os << "Posicao.........: " << jog.dados.posicao << endl;
+  return os;
 }

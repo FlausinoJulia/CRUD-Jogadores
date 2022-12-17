@@ -44,7 +44,10 @@ public:
   void criar(int, std::string, int, std::string, int, std::string, std::string,
              std::string);
 
-  void exibir();
+  // void exibir();
+
+  // friend para acessar os dados privados do jogador
+  friend std::ostream& operator << (std::ostream&, const Jogador&);
 };
 
 #endif

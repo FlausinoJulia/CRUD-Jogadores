@@ -14,8 +14,9 @@ using namespace std;
 
 // metodo para verificar se uma string contem apenas valores numericos
 bool isnumber(const string &str) {
-  if (str.empty()) return false;
-  
+  if (str.empty())
+    return false;
+
   return str.find_first_not_of("0123456789") == std::string::npos;
 }
 
@@ -43,8 +44,8 @@ int main() {
       switch (opcao[0]) {
       case '1': { // incluir jogador
         Jogador jog;
-        string nomeCompleto, nomeCamiseta, pais, time, posicao,
-               id, idade, numero;
+        string nomeCompleto, nomeCamiseta, pais, time, posicao, id, idade,
+            numero;
 
         cout << "\n--------------------" << endl;
         cout << "ADICIONANDO JOGADOR" << endl;
@@ -235,8 +236,8 @@ int main() {
           }
         } while (erro);
 
-        try { 
-          jogadores.incluir(jog) ;
+        try {
+          jogadores.incluir(jog);
           cout << "\nJogador incluido com sucesso!" << endl;
         } catch (int excecao) {
           if (excecao == 1)
@@ -291,7 +292,8 @@ int main() {
         try {
           jog = jogadores.buscarJogador(id);
           cout << "\nO jogador foi encontrado!" << endl;
-          jog.exibir();
+          // jog.exibir();
+          cout << jog;
         } catch (int excecao) {
           if (excecao == 1)
             cout << "\nNao foi possivel abrir o arquivo!" << endl;
@@ -348,11 +350,11 @@ int main() {
           else if (excecao == 2)
             cout << "\nNao ha nenhum jogador cadastrado. " << endl;
           else if (excecao == 3)
-            cout << "\nEsse jogador nao existe!" <<endl;
-          
+            cout << "\nEsse jogador nao existe!" << endl;
+
           break;
         }
-        
+
         char desejaAlterar = 'S';
 
         // MUDAR NOME COMPLETO //
@@ -611,9 +613,8 @@ int main() {
         Jogador jog;
 
         try {
-            jog = jogadores.buscarJogador(id);
-        }
-        catch (int excecao){
+          jog = jogadores.buscarJogador(id);
+        } catch (int excecao) {
           if (excecao == 1)
             cout << "\nNao foi possivel abrir o arquivo!" << endl;
           else if (excecao == 2)
@@ -621,15 +622,13 @@ int main() {
           else if (excecao == 3)
             cout << "\nEsse jogador nao existe!" << endl;
           break;
-        }    
+        }
 
         if (jog.getId() == id) {
-          try 
-          {
+          try {
             jogadores.excluir(id);
             cout << "\nO registro do jogador foi excluido!" << endl;
-          } catch (int excecao)
-          {
+          } catch (int excecao) {
             if (excecao == 1)
               cout << "\nNao foi possivel abrir o arquivo! " << endl;
             else if (excecao == 2)

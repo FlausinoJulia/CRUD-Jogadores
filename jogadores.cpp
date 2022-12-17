@@ -141,7 +141,8 @@ void Jogadores::exibirJogadores() {
       int cont = 0;
       cout << "\nJOGADORES" << endl;
       while (arquivo.read((char *)&jog, sizeof(jog))) {
-        jog.exibir();
+        // jog.exibir();
+        cout << jog;
       }
     }
 
